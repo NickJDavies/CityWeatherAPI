@@ -6,16 +6,19 @@
     <title>Document</title>
 </head>
 <body>
+    <h1> Search for the weather of a city :</h1>
     <form>
         <textarea id="cityInput"></textarea>
     </form>
     <button id="addCity">Add City</button>
     <div id="weather"></div>
+    <hr>
     <div id="cityList"></div>
     
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script>//sets the cities array
+    <script>
+        //sets the cities array
         var cities = [];
         
         //checks if anything is locally stored
@@ -99,18 +102,42 @@
                 url: queryURL,
                 method: "GET"
             }).then(function(response) {
+                $("#weather").empty();
                 //necessary variables
                 var weather = response.data;
 
                 //necessary elements
                 var div = $("<div>");
                 var p = $("<p>");
+                var name = $("<p>");
+                var date = $("<p>");
+                var icon = $("<p>");
+                var temp = $("<p>");
+                var humidity = $("<p>");
+                var windSpeed = $("<p>");
+
+                //sets text of each
+                name.text("City : " + response.name);
+                date.text("Date : " + Date.now());
+                icon.text(response.weather.main);
+                temp.text("Temp : " + response.main.temp);
+                humidity.text("Humidity : " + response.main.humidity);
+                windSpeed.text("Wind Speed : " + response.wind.speed);
+
+
                 
                 //for me for now
                 console.log(response);
 
+
                 //appends elements
                 div.append(p);
+                div.append(name);
+                div.append(date);
+                div.append(icon);
+                div.append(temp);
+                div.append(humidity);
+                div.append(windSpeed);
                 $("#weather").prepend(div);
             });
         });
