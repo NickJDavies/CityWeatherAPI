@@ -62,7 +62,7 @@
         
         //when the add button is pushed
         $("#addCity").on("click", function() {
-            var city = $("#cityInput").val();
+            var city = $("#cityInput").val().trim();
             // if the city is already in the array
             if(cities.indexOf(city) !== -1) {
                 alert("city already added")
@@ -103,37 +103,39 @@
                 method: "GET"
             }).then(function(response) {
                 $("#weather").empty();
-                //necessary variables
-                var weather = response.data;
-
                 //necessary elements
                 var div = $("<div>");
                 var p = $("<p>");
                 var name = $("<p>");
                 var date = $("<p>");
-                var icon = $("<p>");
+                var iconDesc = $("<p>");
+                var icon = $("<img>");
                 var temp = $("<p>");
                 var humidity = $("<p>");
                 var windSpeed = $("<p>");
 
+                //fetches the current date         
+                var time = new Date();
+                                
+                var day = time.getDate();
+                var month = time.getMonth() + 1;
+                var year = time.getFullYear();
+                var dateString = day + "/" + month + "/" + year + " (DD//MM//YYYY)";
+                
                 //sets text of each
                 name.text("City : " + response.name);
-                date.text("Date : " + Date.now());
-                icon.text(response.weather.main);
+                date.text("Date : " + dateString);
+                icon.attr("src", "http://openweathermap.org/img/w/" + response.weather[0].icon + ".png")
+                iconDesc = "Weather : " + response.weather[0].main;
                 temp.text("Temp : " + response.main.temp);
                 humidity.text("Humidity : " + response.main.humidity);
                 windSpeed.text("Wind Speed : " + response.wind.speed);
-
-
-                
-                //for me for now
-                console.log(response);
-
 
                 //appends elements
                 div.append(p);
                 div.append(name);
                 div.append(date);
+                div.append(iconDesc);
                 div.append(icon);
                 div.append(temp);
                 div.append(humidity);
