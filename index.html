@@ -8,7 +8,7 @@
 <body>
     <h1> Search for the weather of a city :</h1>
     <form>
-        <textarea id="cityInput"></textarea>
+        <textarea placeholder="Enter a City" id="cityInput"></textarea>
     </form>
     <button id="addCity">Add City</button>
     <div id="weather"></div>
@@ -65,7 +65,7 @@
             var city = $("#cityInput").val().trim();
             // if the city is already in the array
             if(cities.indexOf(city) !== -1) {
-                alert("city already added")
+                alert("City already added")
             } else {
                 //resets the ingredient input
                 $("#cityInput").val("");
@@ -78,6 +78,10 @@
         
                 // renders elements
                 renderElements();
+
+                // calls the function to display the weather, and passes through the url.
+                var queryURL = "https://openweathermap.org/data/2.5/weather?q=" + city + "&units=metric&appid=b6907d289e10d714a6e88b30761fae22";
+                displayWeather(queryURL);
             }
         });
         
@@ -96,8 +100,12 @@
         //Searching for the weather in given city
         $(document).on("click", ".searchBtn", function() {
             var city = $(this).attr("data-city");
-            var queryURL = "https://openweathermap.org/data/2.5/weather?q=" + city + "&units=metric&appid=b6907d289e10d714a6e88b30761fae22"
+            var queryURL = "https://openweathermap.org/data/2.5/weather?q=" + city + "&units=metric&appid=b6907d289e10d714a6e88b30761fae22";
 
+            displayWeather(queryURL);
+        });
+
+        function displayWeather(queryURL) {
             $.ajax({
                 url: queryURL,
                 method: "GET"
@@ -140,10 +148,10 @@
                 div.append(temp);
                 div.append(humidity);
                 div.append(windSpeed);
-                $("#weather").prepend(div);
+                $("#weather").prepend(div);    
             });
-        });
-        
+        }
+
         renderElements();
     </script>
 </body>
