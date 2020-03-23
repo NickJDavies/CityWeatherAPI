@@ -10,7 +10,9 @@
         <textarea id="cityInput"></textarea>
     </form>
     <button id="addCity">Add City</button>
+    <div id="weather"></div>
     <div id="cityList"></div>
+    
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script>//sets the cities array
@@ -27,20 +29,28 @@
             for(i = 0; i < cities.length; i++) {
                 var city = cities[i];
                 //creates necessary elements
-                var button = $("<button>");
+                var buttonRemove = $("<button>");
+                var buttonSearchCity = $("<button>");
                 var div = $("<div>");
         
                 // adds necessary classes and ids
-                button.addClass("removeBtn");
-                button.attr("id", city);
-                button.attr("style", "padding: 5px; margin: 5px")
+                buttonRemove.addClass("removeBtn");
+                buttonRemove.attr("id", city);
+                buttonRemove.attr("style", "padding: 5px; margin: 5px")
+                
+                buttonSearchCity.addClass("searchBtn")
+                buttonSearchCity.attr("style", "padding: 5px; margin: 5px")
+                buttonSearchCity.attr("data-city", city)
+
 
                 // sets text of elements
-                button.text("Remove");
+                buttonRemove.text("Remove");
+                buttonSearchCity.text("Search City")
                 div.text(city);
         
                 // appends elements
-                div.append(button);
+                div.append(buttonRemove);
+                div.append(buttonSearchCity);
         
                 // sets text to input
                 $("#cityList").append(div);
@@ -78,6 +88,32 @@
         
             //renders the array
             renderElements();
+        });
+
+        //Searching for the weather in given city
+        $(document).on("click", ".searchBtn", function() {
+            var city = $(this).attr("data-city");
+            var queryURL = "https://openweathermap.org/data/2.5/weather?q=" + city + "&units=metric&appid=b6907d289e10d714a6e88b30761fae22"
+
+            $.ajax({
+                url: queryURL,
+                method: "GET"
+            }).then(function(response) {
+                //necessary variables
+                var weather = response.data;
+
+                //necessary elements
+                var Div = $("<div>");
+                var p = $("<p>");
+                
+                //for me for now
+                console.log(response)
+
+                //appends elements
+                Div.append(p);
+                $("#weather").prepend(Div);
+            }
+            });
         });
         
         renderElements();
