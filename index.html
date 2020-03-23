@@ -103,16 +103,15 @@
                 var weather = response.data;
 
                 //necessary elements
-                var Div = $("<div>");
+                var div = $("<div>");
                 var p = $("<p>");
                 
                 //for me for now
-                console.log(response)
+                console.log(response);
 
                 //appends elements
-                Div.append(p);
-                $("#weather").prepend(Div);
-            }
+                div.append(p);
+                $("#weather").prepend(div);
             });
         });
         
