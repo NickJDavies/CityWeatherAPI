@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form>
+        <textarea id="cityInput"></textarea>
+    </form>
+    <button id="addCity">Add City</button>
+    <div id="cityList"></div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>//sets the cities array
+        var cities = [];
+        
+        //checks if anything is locally stored
+        if (localStorage.getItem("Cities") !== null) {
+            cities = JSON.parse(localStorage.getItem("Cities"));
+        };
+        
+        // renders the elements
+        function renderElements() {
+            $("#cityList").empty();
+            for(i = 0; i < cities.length; i++) {
+                var city = cities[i];
+                //creates necessary elements
+                var button = $("<button>");
+                var div = $("<div>");
+        
+                // adds necessary classes and ids
+                button.addClass("removeBtn");
+                button.attr("id", city);
+                button.attr("style", "padding: 5px; margin: 5px")
+
+                // sets text of elements
+                button.text("Remove");
+                div.text(city);
+        
+                // appends elements
+                div.append(button);
+        
+                // sets text to input
+                $("#cityList").append(div);
+            }
+        }
+        
+        //when the add button is pushed
+        $("#addCity").on("click", function() {
+            var city = $("#cityInput").val();
+            // if the city is already in the array
+            if(cities.indexOf(city) !== -1) {
+                alert("city already added")
+            } else {
+                //resets the ingredient input
+                $("#cityInput").val("");
+        
+                //adds ingredient to the array
+                cities.push(city);
+        
+                //stores the new array locally
+                localStorage.setItem("Cities", JSON.stringify(cities));
+        
+                // renders elements
+                renderElements();
+            }
+        });
+        
+        $(document).on("click", ".removeBtn", function() {
+            //removes from array
+            var indexOfCity = cities.indexOf($(this).attr("id"));
+            cities.splice(indexOfCity, 1);
+        
+            //stores the new array locally 
+            localStorage.setItem("Cities", JSON.stringify(cities));
+        
+            //renders the array
+            renderElements();
+        });
+        
+        renderElements();
+    </script>
+</body>
+</html>
